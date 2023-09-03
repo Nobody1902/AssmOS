@@ -86,6 +86,11 @@ void print_str(char *string)
         print_char(character);
     }
 }
+void print_line(char *string)
+{
+    print_str(string);
+    print_char('\n');
+}
 
 void print_set_color(uint8_t foreground, uint8_t background)
 {

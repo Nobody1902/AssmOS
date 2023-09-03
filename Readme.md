@@ -14,7 +14,7 @@
 
   - Run `docker run --rm -it -v $(pwd):/root/env assm-os.buildenv`
 
-- Then run `make build-x86_64` and exit from the docker container (run `exit`)
+- Then run `make build` and exit from the docker container (run `exit`)
 
 - You'll find the `kernel.iso` file in `dist/x86_64`
 
@@ -24,4 +24,5 @@
 
 # Credits
 
-- [@CodePulse](https://www.youtube.com/@CodePulse)
+- Blog [os.phil-oop.com](https://os.phil-opp.com/edition-1/)
+- Youtube [@CodePulse](https://www.youtube.com/@CodePulse)
