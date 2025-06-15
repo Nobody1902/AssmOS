@@ -1,11 +1,18 @@
 #include "string.h"
-#include <stdio.h>
 
 void *memset(void *p, int c, size_t count) {
   for (unsigned int i = 0; i < count; i++) {
     ((char *)p)[i] = c;
   }
   return p;
+}
+
+void *memcpy(void *dest, const void *src, size_t len) {
+  char *d = dest;
+  const char *s = src;
+  while (len--)
+    *d++ = *s++;
+  return dest;
 }
 
 size_t strlen(const char *str) {
@@ -16,16 +23,8 @@ size_t strlen(const char *str) {
 }
 
 int strcmp(const char *s1, const char *s2) {
-  while (*s1 && *s2) {
-    if (*s1 != *s2) {
-      return s1 - s2;
-    }
-    s1++;
-    s2++;
-  }
-  if (*s1)
-    return 1;
-  if (*s2)
-    return -1;
-  return 0;
+  for (; *s1 == *s2; *s2++, *s1++)
+    if (*s1 == '\0')
+      return 0;
+  return *s1 - *s2;
 }

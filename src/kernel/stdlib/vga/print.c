@@ -1,5 +1,5 @@
 #include "print.h"
-#include "string.h"
+#include "../string.h"
 
 const static size_t NUM_COLS = 80;
 const static size_t NUM_ROWS = 25;
@@ -16,13 +16,16 @@ uint8_t color = PRINT_COLOR_WHITE | PRINT_COLOR_BLACK << 4;
 
 void clear_row(size_t row) {
   struct Char empty = (struct Char){' ', color};
-
   for (size_t col = 0; col < NUM_COLS; col++) {
     buffer[col + NUM_COLS * row] = empty;
   }
+
+  col = 0;
 }
 
-void print_clear() {
+void clear_line() { clear_row(row); }
+
+void clear() {
   for (size_t i = 0; i < NUM_ROWS; i++) {
     clear_row(i);
   }

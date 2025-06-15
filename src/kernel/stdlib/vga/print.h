@@ -22,7 +22,8 @@ enum {
   PRINT_COLOR_WHITE = 15,
 };
 
-void print_clear();
+void clear();
+void clear_line();
 void print_char(char character);
 void print_str(char *string);
 void print_line(char *string);

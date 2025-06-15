@@ -23,7 +23,7 @@ echo "Compiling ${KERNEL_SRC_C}"
 echo "${KERNEL_SRC_ASM}"
 
 cd "${OBJECT_DIR}/kernel" || exit
-gcc -c ${KERNEL_SRC_C} -ffreestanding -m64
+x86_64-elf-gcc -c ${KERNEL_SRC_C} -ffreestanding -m64 -msse -msse2 -mfpmath=sse
 for item in $KERNEL_SRC_ASM; do
   export kernel_obj=$(basename $item)
   nasm -f elf64 $item -o $(pwd)/${kernel_obj%.*}.o

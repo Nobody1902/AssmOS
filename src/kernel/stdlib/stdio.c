@@ -1,6 +1,7 @@
 #include "stdio.h"
+#include "float.h"
+#include "int.h"
 #include "keyboard/input.h"
-#include "stdlib/int.h"
 #include "vga/print.h"
 #include <stdarg.h>
 #include <stdbool.h>
@@ -39,18 +40,25 @@ void printf(const char *fmt, ...) {
     if (*fmt == '%') {
       fmt++;
       if (*fmt == 'd' || *fmt == 'i') {
-        char *buff = itoa(va_arg(args, int), buff, 10);
+        char buff[64];
+        itoa(va_arg(args, int), buff, 10);
         puts(buff);
       } else if (*fmt == 'u') {
-        char *buff = utoa(va_arg(args, unsigned int), buff, 10);
+        char buff[64];
+        utoa(va_arg(args, unsigned int), buff, 10);
         puts(buff);
       } else if (*fmt == 'f' || *fmt == 'F') {
-        puts("(%f,%F aren't yet implemented)"); // TODO: Implement floats
+        char buff[64];
+        double f = va_arg(args, double);
+        ftos((float)f, buff);
+        puts(buff);
       } else if (*fmt == 'x' || *fmt == 'X') {
-        char *buff = utoa(va_arg(args, unsigned int), buff, 16);
+        char buff[64];
+        utoa(va_arg(args, unsigned int), buff, 16);
         puts(buff);
       } else if (*fmt == 'o') {
-        char *buff = utoa(va_arg(args, unsigned int), buff, 8);
+        char buff[64];
+        utoa(va_arg(args, unsigned int), buff, 8);
         puts(buff);
       } else if (*fmt == 's') {
         puts(va_arg(args, char *));

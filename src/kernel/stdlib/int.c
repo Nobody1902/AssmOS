@@ -1,31 +1,33 @@
 #include "int.h"
 
-char *itoa(int value, char *result, int base) {
+int itoa(int value, char *result, int base) {
+  int len = 0;
   if (base < 2 || base > 36) {
     *result = '\0';
-    return result;
+    return len;
   }
 
   unsigned int val;
   char *ptr = result;
 
   if (value < 0) {
-    *ptr++ = '-';
+    ptr[len++] = '-';
     // Handle INT_MIN carefully
     val = (unsigned int)(-(value + 1)) + 1;
   } else {
     val = (unsigned int)value;
   }
 
-  char *digits_start = utoa(val, ptr, base);
+  len += utoa(val, ptr, base);
 
-  return result;
+  return len;
 }
 
-char *utoa(unsigned int value, char *result, int base) {
+int utoa(unsigned int value, char *result, int base) {
+  int len = 0;
   if (base < 2 || base > 36) {
     *result = '\0';
-    return result;
+    return len;
   }
 
   char *ptr = result;
@@ -35,19 +37,19 @@ char *utoa(unsigned int value, char *result, int base) {
 
   // Handle zero explicitly
   if (value == 0) {
-    *ptr++ = '0';
-    *ptr = '\0';
-    return result;
+    ptr[len++] = '0';
+    ptr[len] = '\0';
+    return len;
   }
 
   // Convert number to string in reverse order
   while (value != 0) {
     unsigned int remainder = value % base;
     value /= base;
-    *ptr++ = digits[remainder];
+    ptr[len++] = digits[remainder];
   }
 
-  *ptr = '\0';
+  ptr[len] = '\0';
 
   // Reverse the string
   ptr1 = result;
@@ -60,5 +62,5 @@ char *utoa(unsigned int value, char *result, int base) {
     ptr1++;
   }
 
-  return result;
+  return len;
 }

@@ -7,16 +7,19 @@ section .text
 bits 32 ; still 32bit mode
 start:
     mov esp, stack_top ; set the stack pointer to the empty stack
-    
+
     ; turn on long mode
     call check_multiboot
     call check_cpuid
+
+    call enable_sse
+
     call check_long_mode
 
     ; enable paging
     call setup_page_tables
     call enable_paging
-    
+
     lgdt [gdt64.pointer]
     jmp gdt64.code_segement:long_mode_start
 
@@ -31,6 +34,16 @@ check_multiboot:
 .no_multiboot:
     mov al, "M" ; set the error code 'M', no multiboot
     jmp error
+
+enable_sse:
+    mov eax, cr0
+    and eax, 0xFFFFFFFB        ; clear EM bit (bit 2)
+    or eax, 0x2                ; set MP bit (bit 1)
+    mov cr0, eax
+
+    mov eax, cr4
+    or eax, (1 << 9) | (1 << 10)  ; set OSFXSR and OSXMMEXCPT bits
+    mov cr4, eax
 
 check_cpuid:
     pushfd
@@ -62,7 +75,7 @@ check_long_mode:
     cpuid
     test edx, 1 << 29
     jz .no_long_mode
-    
+
     ret
 
 .no_long_mode:
