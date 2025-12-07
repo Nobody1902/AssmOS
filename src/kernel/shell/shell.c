@@ -2,7 +2,6 @@
 #include "../stdlib/shutdown.h"
 #include "../stdlib/stdio.h"
 #include "../stdlib/string.h"
-#include "../stdlib/vga/print.h"
 
 void run(char *buff, int len) {
   if (strcmp(buff, "exit") == 0 || strcmp(buff, "shutdown") == 0) {
@@ -27,7 +26,7 @@ int shell() {
 
   for (;;) {
     keyCode_t key = scanKey();
-    // clear_line();
+
     if (keyReleased(key)) {
       key = key & ~0x80; // Remove released bit (0x80)
       if (isAscii(key))
@@ -43,34 +42,34 @@ int shell() {
       default:
         break;
       }
-    } else {
-      if (isAscii(key) && !ctrlPressed) {
-        printf("%c", toAscii(key, shiftPressed));
-        if (key == KEY_ENTER) {
-          printf("\n> ");
-          *buffer++ = '\0';
-          run(start, buffer - start);
+      continue;
+    }
+    if (isAscii(key) && !ctrlPressed) {
+      printf("%c", toAscii(key, shiftPressed));
+      if (key == KEY_ENTER) {
+        printf("\n> ");
+        *buffer++ = '\0';
+        run(start, buffer - start);
 
-          memset(start, 0, buffer - start);
-          buffer = start;
-        } else {
-          *buffer++ = toAscii(key, shiftPressed);
-        }
-        continue;
-      } else if (ctrlPressed) {
-        printf("\\%c", toAscii(key, shiftPressed));
-        continue;
+        memset(start, 0, buffer - start);
+        buffer = start;
+      } else {
+        *buffer++ = toAscii(key, shiftPressed);
       }
-      switch (key) {
-      case KEY_LEFT_CONTROL:
-        ctrlPressed = true;
-        break;
-      case KEY_LEFT_SHIFT:
-        shiftPressed = true;
-        break;
-      default:
-        break;
-      }
+      continue;
+    } else if (ctrlPressed) {
+      printf("\\%c", toAscii(key, shiftPressed));
+      continue;
+    }
+    switch (key) {
+    case KEY_LEFT_CONTROL:
+      ctrlPressed = true;
+      break;
+    case KEY_LEFT_SHIFT:
+      shiftPressed = true;
+      break;
+    default:
+      break;
     }
   }
 }
