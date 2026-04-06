@@ -1,12 +1,13 @@
 ; OS entry point
 global start
 
+extern __stack_top
 extern long_mode_start
 
 section .text
 bits 32 ; still 32bit mode
 start:
-    mov esp, stack_top ; set the stack pointer to the empty stack
+    mov esp, __stack_top ; set the stack pointer to the empty stack
 
     ; turn on long mode
     call check_multiboot

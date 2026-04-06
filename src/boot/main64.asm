@@ -16,4 +16,11 @@ long_mode_start:
     mov gs, ax
 
     call kernel_main
+
+    cli
+
+    jmp .halt_loop
+
+.halt_loop:
     hlt
+    jmp .halt_loop
