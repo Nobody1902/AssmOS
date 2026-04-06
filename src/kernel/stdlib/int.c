@@ -1,6 +1,6 @@
 #include "int.h"
 
-int itoa(int value, char *result, int base) {
+int itoa(int32_t value, char *result, int base) {
   int len = 0;
   if (base < 2 || base > 36) {
     *result = '\0';
@@ -23,11 +23,11 @@ int itoa(int value, char *result, int base) {
   return len;
 }
 
-int utoa(unsigned int value, char *result, int base) {
+int utoa(uint32_t value, char *result, int base) {
   int len = 0;
   if (base < 2 || base > 36) {
     *result = '\0';
-    return len;
+    return -1;
   }
 
   char *ptr = result;

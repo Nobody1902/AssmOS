@@ -6,4 +6,7 @@
 void outb(uint16_t port, uint8_t value);
 uint8_t inb(uint16_t port);
 
+void insw(uint16_t port, void *buf, uint32_t count);
+void outsw(uint16_t port, const void *buf, uint32_t count);
+
 #endif
