@@ -1,4 +1,5 @@
 #include "string.h"
+#include <stddef.h>
 #include <stdint.h>
 
 void *memset(void *p, int c, size_t count) {
@@ -16,6 +17,18 @@ void *memcpy(void *dest, const void *src, size_t len) {
   return dest;
 }
 
+int memcmp(const void *s1, const void *s2, size_t n) {
+  const unsigned char *p1 = (const unsigned char *)s1;
+  const unsigned char *p2 = (const unsigned char *)s2;
+  while (n--) {
+    if (*p1 != *p2)
+      return (*p1 > *p2) ? 1 : -1;
+    ++p1;
+    ++p2;
+  }
+  return 0;
+}
+
 size_t strlen(const char *str) {
   size_t ret = 0;
   while (str[ret] != '\0')
@@ -28,4 +41,15 @@ int strcmp(const char *s1, const char *s2) {
     if (*s1 == '\0')
       return 0;
   return *s1 - *s2;
+}
+
+const char *strchr(const char *s, int c) {
+  unsigned char uc = (unsigned char)c;
+  for (;; ++s) {
+    if ((unsigned char)*s == uc)
+      return s;
+    if (*s == '\0')
+      break;
+  }
+  return NULL;
 }
