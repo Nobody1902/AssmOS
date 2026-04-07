@@ -1,29 +1,23 @@
 #include "input.h"
 
 keyCode_t scanKey() {
-  while (true)
-    if (inb(0x64) & 0x1)
-      return inb(0x60);
+  keyCode_t scancode;
+  while (true) {
+    if (inb(0x64) & 0x1) {
+      scancode = inb(0x60);
+      if (scancode < 128)
+        return scancode;
+    }
+  }
 }
 
 bool keyReleased(keyCode_t keycode) { return (keycode & 0x80) != 0; }
 
 bool isAscii(keyCode_t keycode) {
-  // Ignore extended keys (0xE0 prefix)
-  unsigned int scancode = (unsigned int)keycode;
-  if ((scancode & 0xFF00) == 0xE000) {
+  if (keycode >= 128)
     return false;
-  }
-
-  unsigned char index = (unsigned char)(scancode & 0xFF);
-  unsigned char ascii = keycode_to_ascii[index];
-
-  // Only printable ASCII (0x20 to 0x7E)
-  if (ascii >= 0x20 && ascii <= 0x7E) {
-    return true;
-  }
-
-  return false;
+  unsigned char ascii = keycode_to_ascii[keycode];
+  return ascii >= 0x20 && ascii <= 0x7E;
 }
 
 char toAscii(keyCode_t key, bool shiftPressed) {
