@@ -31,7 +31,7 @@ SECTIONS
 
     .stack (NOLOAD) :
     {
-        . = . + 0x00010000; /* 64 KB stack */
+        . = . + 0x00800000; /* 8 MB stack */
     }
     __stack_bottom = .;
     . = ALIGN(0x1000);
