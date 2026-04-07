@@ -53,3 +53,53 @@ const char *strchr(const char *s, int c) {
   }
   return NULL;
 }
+
+char *strtok(char *s, const char *delim) {
+  static char *next = NULL;
+  char *start;
+  if (s != NULL)
+    next = s;
+  if (next == NULL)
+    return NULL;
+
+  for (; *next != '\0'; ++next) {
+    const char *d = delim;
+    int is_delim = 0;
+    while (*d != '\0') {
+      if (*next == *d) {
+        is_delim = 1;
+        break;
+      }
+      ++d;
+    }
+    if (!is_delim)
+      break;
+  }
+
+  if (*next == '\0') {
+    next = NULL;
+    return NULL;
+  }
+
+  start = next;
+
+  for (; *next != '\0'; ++next) {
+    const char *d = delim;
+    int is_delim = 0;
+    while (*d != '\0') {
+      if (*next == *d) {
+        is_delim = 1;
+        break;
+      }
+      ++d;
+    }
+    if (is_delim) {
+      *next = '\0';
+      ++next;
+      return start;
+    }
+  }
+
+  next = NULL;
+  return start;
+}

@@ -29,6 +29,8 @@ void clear() {
   for (size_t i = 0; i < NUM_ROWS; i++) {
     clear_row(i);
   }
+  col = 0;
+  row = 0;
 }
 void print_newline() {
   col = 0;
@@ -79,12 +81,12 @@ void print_char(char character) {
   col++;
 }
 
-void print_str(char *string) {
+void print_str(const char *string) {
   for (size_t i = 0; i < strlen(string); i++) {
     print_char((uint8_t)string[i]);
   }
 }
-void print_line(char *string) {
+void print_line(const char *string) {
   print_str(string);
   print_char('\n');
 }
