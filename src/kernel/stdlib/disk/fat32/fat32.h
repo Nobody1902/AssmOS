@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 typedef struct {
-  uint8_t jump[3];
+  uint8_t jmp[3];
   uint8_t oem[8];
   uint16_t bytes_per_sector;
   uint8_t sectors_per_cluster;
@@ -19,7 +19,6 @@ typedef struct {
   uint16_t num_heads;
   uint32_t hidden_sectors;
   uint32_t total_sectors_32;
-
   uint32_t fat_size_32;
   uint16_t ext_flags;
   uint16_t fs_version;
@@ -29,7 +28,7 @@ typedef struct {
 typedef struct {
   char name[11];
   uint8_t attr;
-  uint8_t ntres;
+  uint8_t nt_res;
   uint8_t crt_time_tenth;
   uint16_t crt_time;
   uint16_t crt_date;
@@ -44,21 +43,15 @@ typedef struct {
 typedef struct {
   block_device_t *dev;
   fat32_bpb_t bpb;
-
   uint32_t fat_start_lba;
   uint32_t data_start_lba;
-  uint32_t sectors_per_cluster;
+  uint8_t sectors_per_cluster;
 } fat32_t;
 
+// Minimal FAT32 functions
 int fat32_mount(fat32_t *fs, block_device_t *dev);
-
 int fat32_listdir(fat32_t *fs, const char *path);
 int fat32_file_size(fat32_t *fs, const char *path, uint32_t *size);
 int fat32_read(fat32_t *fs, const char *path, void *buf, uint32_t size);
-int fat32_write(fat32_t *fs, const char *path, const void *buf, uint32_t size);
-
-int fat32_mkdir(fat32_t *fs, const char *path);
-int fat32_rm(fat32_t *fs, const char *path);
-int fat32_rmdir(fat32_t *fs, const char *path);
 
 #endif
