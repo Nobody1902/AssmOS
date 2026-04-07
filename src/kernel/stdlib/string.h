@@ -10,5 +10,7 @@ size_t strlen(const char *str);
 int strcmp(const char *s1, const char *s2);
 const char *strchr(const char *s, int c);
 char *strtok(char *s, const char *delim);
+size_t strnlen(const char *s, size_t maxlen);
+int strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

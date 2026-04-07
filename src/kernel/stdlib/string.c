@@ -103,3 +103,29 @@ char *strtok(char *s, const char *delim) {
   next = NULL;
   return start;
 }
+
+size_t strnlen(const char *s, size_t maxlen) {
+  const char *p = s;
+  size_t n = maxlen;
+
+  while (n-- && *p) {
+    p++;
+  }
+  return (size_t)(p - s);
+}
+
+int strncmp(const char *s1, const char *s2, size_t n) {
+  size_t i = 0;
+  unsigned char c1, c2;
+
+  while (i < n) {
+    c1 = (unsigned char)s1[i];
+    c2 = (unsigned char)s2[i];
+    if (c1 != c2)
+      return (int)c1 - (int)c2;
+    if (c1 == '\0')
+      break;
+    i++;
+  }
+  return 0;
+}
