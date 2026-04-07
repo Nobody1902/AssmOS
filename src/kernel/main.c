@@ -1,4 +1,5 @@
 #include "shell/shell.h"
+#include "stdlib/disk/ata.h"
 #include "stdlib/disk/ata_device.h"
 #include "stdlib/disk/block_device.h"
 #include "stdlib/disk/fat32/fat32.h"
@@ -13,7 +14,7 @@ void kernel_main() {
 
   printf("Hello World!\n");
 
-  block_device_t *ata_device = create_ata_device();
+  block_device_t *ata_device = create_ata_device(ATA_DRIVE_SLAVE);
 
   if (ata_device->init() != ATA_OK) {
     printf("ATA init failed.\n");
@@ -22,24 +23,12 @@ void kernel_main() {
 
   fat32_t fs;
 
-  if (fat32_mount(&fs, ata_device) == 0) {
-    printf("FAT32 mounted!\n");
-    fat32_listdir(&fs, "/");
-    uint32_t sz;
-    fat32_file_size(&fs, "test.txt", &sz);
-    printf("test.txt size = %u bytes\n", sz);
-
-    char *buf = kmalloc(sz);
-    fat32_read(&fs, "test.txt", buf, sz);
-
-    buf[sz - 1] = '\0';
-
-    printf("%s\n", buf);
-
-    kfree(buf);
-  } else {
+  if (fat32_mount(&fs, ata_device) != 0) {
     printf("Failed to mount FAT32\n");
+    return;
   }
 
-  shell();
+  shell(&fs);
+
+  kfree(ata_device);
 }
