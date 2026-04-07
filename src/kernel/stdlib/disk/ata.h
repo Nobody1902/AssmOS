@@ -60,7 +60,7 @@ int ata_init(void);
  *
  * @return ATA_OK on success, negative error code otherwise.
  */
-int ata_read(uint32_t lba, uint8_t count, uint8_t *buf);
+int ata_read(uint32_t lba, uint8_t count, uint8_t *buf, uint8_t drive_selector);
 
 /**
  * Write @count sectors from @buf to disk starting at @lba.
@@ -68,6 +68,7 @@ int ata_read(uint32_t lba, uint8_t count, uint8_t *buf);
  *
  * @return ATA_OK on success, negative error code otherwise.
  */
-int ata_write(uint32_t lba, uint8_t count, const uint8_t *buf);
+int ata_write(uint32_t lba, uint8_t count, const uint8_t *buf,
+              uint8_t drive_selector);
 
 #endif

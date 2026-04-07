@@ -90,10 +90,9 @@ int ata_init(void) {
   return ATA_OK;
 }
 
-int ata_read(uint32_t lba, uint8_t count, uint8_t *buf) {
-  int err;
-
-  err = ata_select_drive(ATA_DRIVE_SLAVE | ((lba >> 24) & 0x0F));
+int ata_read(uint32_t lba, uint8_t count, uint8_t *buf,
+             uint8_t drive_selector) {
+  int err = ata_select_drive(drive_selector | ((lba >> 24) & 0x0F));
   if (err != ATA_OK)
     return err;
 
@@ -117,10 +116,9 @@ int ata_read(uint32_t lba, uint8_t count, uint8_t *buf) {
   return ATA_OK;
 }
 
-int ata_write(uint32_t lba, uint8_t count, const uint8_t *buf) {
-  int err;
-
-  err = ata_select_drive(ATA_DRIVE_SLAVE | ((lba >> 24) & 0x0F));
+int ata_write(uint32_t lba, uint8_t count, const uint8_t *buf,
+              uint8_t drive_selector) {
+  int err = ata_select_drive(drive_selector | ((lba >> 24) & 0x0F));
   if (err != ATA_OK)
     return err;
 
